@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useAuth } from '../../contexts/AuthContext';
 import { api } from '../../services/api';
-import { User, Mail, Phone, MapPin, Calendar, Edit, Save, X } from 'lucide-react';
+import { User, Mail, Phone, MapPin, Calendar, CreditCard as Edit, Save, X } from 'lucide-react';
 
 const ProfilePage = () => {
   const { user, updateUser } = useAuth();
