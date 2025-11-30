@@ -99,7 +99,11 @@ export const AuthProvider = ({ children }) => {
       }
     };
 
-    checkAuth();
+    const timer = setTimeout(() => {
+      checkAuth();
+    }, 500);
+
+    return () => clearTimeout(timer);
   }, []);
 
   const login = async (credentials) => {

@@ -72,12 +72,12 @@ const DashboardLayout = () => {
                     to={item.href}
                     className={`group flex items-center px-2 py-2 text-base font-medium rounded-md ${
                       isActive
-                        ? 'bg-violet-100 text-violet-900'
+                        ? 'bg-blue-100 text-blue-900'
                         : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
                     }`}
                     onClick={() => setSidebarOpen(false)}
                   >
-                    <Icon className={`mr-4 h-6 w-6 ${isActive ? 'text-violet-500' : 'text-gray-400 group-hover:text-gray-500'}`} />
+                    <Icon className={`mr-4 h-6 w-6 ${isActive ? 'text-blue-500' : 'text-gray-400 group-hover:text-gray-500'}`} />
                     {item.name}
                   </Link>
                 );
@@ -88,7 +88,7 @@ const DashboardLayout = () => {
           <div className="flex-shrink-0 flex border-t border-gray-200 p-4">
             <div className="flex items-center">
               <div className="flex-shrink-0">
-                <div className="h-8 w-8 rounded-full bg-violet-500 flex items-center justify-center">
+                <div className="h-8 w-8 rounded-full bg-blue-500 flex items-center justify-center">
                   <User className="h-5 w-5 text-white" />
                 </div>
               </div>
@@ -119,11 +119,11 @@ const DashboardLayout = () => {
                       to={item.href}
                       className={`group flex items-center px-2 py-2 text-sm font-medium rounded-md ${
                         isActive
-                          ? 'bg-violet-100 text-violet-900'
+                          ? 'bg-blue-100 text-blue-900'
                           : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
                       }`}
                     >
-                      <Icon className={`mr-3 h-5 w-5 ${isActive ? 'text-violet-500' : 'text-gray-400 group-hover:text-gray-500'}`} />
+                      <Icon className={`mr-3 h-5 w-5 ${isActive ? 'text-blue-500' : 'text-gray-400 group-hover:text-gray-500'}`} />
                       {item.name}
                     </Link>
                   );
@@ -134,7 +134,7 @@ const DashboardLayout = () => {
             <div className="flex-shrink-0 flex border-t border-gray-200 p-4">
               <div className="flex items-center w-full">
                 <div className="flex-shrink-0">
-                  <div className="h-8 w-8 rounded-full bg-violet-500 flex items-center justify-center">
+                  <div className="h-8 w-8 rounded-full bg-blue-500 flex items-center justify-center">
                     <User className="h-5 w-5 text-white" />
                   </div>
                 </div>
@@ -160,7 +160,7 @@ const DashboardLayout = () => {
         <div className="relative z-10 flex-shrink-0 flex h-16 bg-white shadow">
           <button
             type="button"
-            className="px-4 border-r border-gray-200 text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-violet-500 md:hidden"
+            className="px-4 border-r border-gray-200 text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500 md:hidden"
             onClick={() => setSidebarOpen(true)}
           >
             <Menu className="h-6 w-6" />
@@ -185,7 +185,7 @@ const DashboardLayout = () => {
             <div className="ml-4 flex items-center md:ml-6">
               <button
                 type="button"
-                className="bg-white p-1 rounded-full text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-violet-500"
+                className="bg-white p-1 rounded-full text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
               >
                 <Bell className="h-6 w-6" />
               </button>
@@ -193,9 +193,9 @@ const DashboardLayout = () => {
               <div className="ml-3 relative">
                 <Link
                   to="/dashboard/profile"
-                  className="max-w-xs bg-white flex items-center text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-violet-500"
+                  className="max-w-xs bg-white flex items-center text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
                 >
-                  <div className="h-8 w-8 rounded-full bg-violet-500 flex items-center justify-center">
+                  <div className="h-8 w-8 rounded-full bg-blue-500 flex items-center justify-center">
                     <User className="h-5 w-5 text-white" />
                   </div>
                   <span className="ml-2 text-gray-700 hidden md:block">{user?.firstName}</span>
