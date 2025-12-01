@@ -1,7 +1,34 @@
 import { createContext, useContext, useReducer, useEffect } from 'react';
-import { authAPI } from '../services/api';
 
 const AuthContext = createContext();
+
+// Mock users for demo
+const MOCK_USERS = {
+  'admin@example.com': {
+    id: 'admin-001',
+    email: 'admin@example.com',
+    firstName: 'Admin',
+    lastName: 'User',
+    password: 'password123',
+    role: 'admin'
+  },
+  'instructor@example.com': {
+    id: 'instructor-001',
+    email: 'instructor@example.com',
+    firstName: 'Instructor',
+    lastName: 'User',
+    password: 'password123',
+    role: 'instructor'
+  },
+  'student@example.com': {
+    id: 'student-001',
+    email: 'student@example.com',
+    firstName: 'Student',
+    lastName: 'User',
+    password: 'password123',
+    role: 'student'
+  }
+};
 
 const initialState = {
   user: null,
@@ -74,18 +101,18 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     const checkAuth = async () => {
       const token = localStorage.getItem('token');
-      if (token) {
+      const userStr = localStorage.getItem('user');
+
+      if (token && userStr) {
         try {
-          const response = await authAPI.getCurrentUser();
+          const user = JSON.parse(userStr);
           dispatch({
             type: 'AUTH_SUCCESS',
-            payload: {
-              user: response.data.user,
-              token
-            }
+            payload: { user, token }
           });
         } catch (error) {
           localStorage.removeItem('token');
+          localStorage.removeItem('user');
           dispatch({
             type: 'AUTH_FAILURE',
             payload: 'Session expired'
@@ -99,28 +126,48 @@ export const AuthProvider = ({ children }) => {
       }
     };
 
-    const timer = setTimeout(() => {
-      checkAuth();
-    }, 500);
-
-    return () => clearTimeout(timer);
+    checkAuth();
   }, []);
 
   const login = async (credentials) => {
     dispatch({ type: 'AUTH_START' });
     try {
-      const response = await authAPI.login(credentials);
-      const { token, user } = response.data;
-      
+      const { email, password } = credentials;
+
+      // Mock authentication
+      const mockUser = MOCK_USERS[email];
+      if (!mockUser || mockUser.password !== password) {
+        const message = 'Invalid email or password';
+        dispatch({
+          type: 'AUTH_FAILURE',
+          payload: message
+        });
+        return { success: false, error: message };
+      }
+
+      // Generate a simple token
+      const token = btoa(`${email}:${Date.now()}`);
+
+      // Store user and token
+      const userData = {
+        id: mockUser.id,
+        email: mockUser.email,
+        firstName: mockUser.firstName,
+        lastName: mockUser.lastName,
+        role: mockUser.role
+      };
+
       localStorage.setItem('token', token);
+      localStorage.setItem('user', JSON.stringify(userData));
+
       dispatch({
         type: 'AUTH_SUCCESS',
-        payload: { user, token }
+        payload: { user: userData, token }
       });
-      
+
       return { success: true };
     } catch (error) {
-      const message = error.response?.data?.message || 'Login failed';
+      const message = 'Login failed';
       dispatch({
         type: 'AUTH_FAILURE',
         payload: message
@@ -132,18 +179,40 @@ export const AuthProvider = ({ children }) => {
   const register = async (userData) => {
     dispatch({ type: 'AUTH_START' });
     try {
-      const response = await authAPI.register(userData);
-      const { token, user } = response.data;
-      
+      const { email, password, firstName, lastName } = userData;
+
+      // Check if user already exists
+      if (MOCK_USERS[email]) {
+        const message = 'User already exists with this email';
+        dispatch({
+          type: 'AUTH_FAILURE',
+          payload: message
+        });
+        return { success: false, error: message };
+      }
+
+      // For demo, just allow registration (in real app, validate on backend)
+      const newUser = {
+        id: `user-${Date.now()}`,
+        email,
+        firstName,
+        lastName,
+        role: 'student'
+      };
+
+      const token = btoa(`${email}:${Date.now()}`);
+
       localStorage.setItem('token', token);
+      localStorage.setItem('user', JSON.stringify(newUser));
+
       dispatch({
         type: 'AUTH_SUCCESS',
-        payload: { user, token }
+        payload: { user: newUser, token }
       });
-      
+
       return { success: true };
     } catch (error) {
-      const message = error.response?.data?.message || 'Registration failed';
+      const message = 'Registration failed';
       dispatch({
         type: 'AUTH_FAILURE',
         payload: message
@@ -154,12 +223,11 @@ export const AuthProvider = ({ children }) => {
 
   const logout = async () => {
     try {
-      await authAPI.logout();
+      localStorage.removeItem('token');
+      localStorage.removeItem('user');
+      dispatch({ type: 'LOGOUT' });
     } catch (error) {
       console.error('Logout error:', error);
-    } finally {
-      localStorage.removeItem('token');
-      dispatch({ type: 'LOGOUT' });
     }
   };
 
